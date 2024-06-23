@@ -1,1 +1,1 @@
-print("Hello Sum")
+print("Hello sum")
