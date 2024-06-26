@@ -2,6 +2,7 @@ from typing import Union
 
 from fastapi import FastAPI
 from pydantic import BaseModel
+from database import read_fruit,add_fruit,read_fruit_select,update_fruit
 
 app = FastAPI()
 
@@ -14,11 +15,32 @@ class Item(BaseModel):
 
 @app.get("/")
 def read_root():
-    return {"Hello": "sum"}
+    return {"Hello": "This is Sum's server! "}
 
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
+@app.get("/fruits/{id}")
+def get_select_fruit(id:int):
+    select_fruit=read_fruit_select(id)
+    return select_fruit
+
+@app.get("/fruits")
+def get_fruit():
+    fruits = read_fruit()
+    return fruits
+
+@app.put("/fruits/{id}")
+def put_update_fruit(id: int, name,price,storename):
+    put_fruit=update_fruit(id,name,price,storename)
+    return {"id":put_fruit.id,"name":put_fruit.name,"price":put_fruit.price,"storename":put_fruit.storename}
+
+@app.post("/fruits/{id}")
+def post_fruit(id,name,price,storename):
+    postfruit=add_fruit(id,name,price,storename)
+    return {"id":postfruit.id,"name":postfruit.name,"price":postfruit.price,"storename":postfruit.storename}
+
+@app.delete("/fruits/{id}")
+def delete_fruit(id:int):
+    return 
+
 
 
